@@ -14,3 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('register-form', function () {
+    return view('register');
+});
+
+Route::post('register', function () {
+    return response()->json(['message' => 'We gucci boys']);
+})->name('register');
