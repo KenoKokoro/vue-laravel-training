@@ -22,3 +22,7 @@ Route::get('register-form', function () {
 Route::post('register', function () {
     return response()->json(['message' => 'We gucci boys']);
 })->name('register');
+
+Route::get('users', function() {
+    return view('users');
+});
