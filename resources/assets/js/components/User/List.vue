@@ -14,16 +14,16 @@
 </template>
 
 <script>
+    import {mapActions, mapState} from 'vuex';
     import User from './Single';
     import LoadingCircle from './../Helpers/LoadingCircle';
-    import axios from 'axios';
+    import {userList as userListTypes} from "../../store/types";
 
     export default {
         components: {User, LoadingCircle},
 
         data() {
             return {
-                results: [],
                 users: [],
                 deleted: [],
                 filter: {
@@ -33,6 +33,12 @@
         },
 
         computed: {
+            ...mapState({
+                results(state) {
+                    return state.userList.users;
+                }
+            }),
+
             hasResults() {
                 return this.results.length > 0;
             },
@@ -42,7 +48,17 @@
             }
         },
 
+        watch: {
+            results(value) {
+                this.users = value;
+            }
+        },
+
         methods: {
+            ...mapActions({
+                setUsers: `userList/${userListTypes.setUser}`
+            }),
+
             deleteUser(email) {
                 const index = _.findIndex(this.users, user => {
                     return user.email === email;
@@ -79,10 +95,7 @@
         },
 
         mounted() {
-            axios.get('https://randomuser.me/api/?results=20').then(response => {
-                this.results = response.data.results;
-                this.users = response.data.results;
-            });
+            this.setUsers();
         },
     }
 </script>

@@ -14,7 +14,9 @@
                 </div>
             </div>
             <div>
-                <button class="is-danger button" @click="deleteUser" v-if="undo === false">Delete</button>
+
+                <button class="is-danger button" @click="deleteFromResults(user.email)">HARD DELETE</button>
+                <button class="is-warning button" @click="deleteUser" v-if="undo === false">Delete</button>
                 <button class="is-warning button" @click="undoUser" v-if="undo === true">Undo</button>
             </div>
         </div>
@@ -22,6 +24,9 @@
 </template>
 
 <script>
+    import {mapActions} from 'vuex';
+    import {userList as userListTypes} from "../../store/types";
+
     export default {
         props: {
             user: {
@@ -35,6 +40,8 @@
         },
 
         methods: {
+            ...mapActions({deleteFromResults: `userList/${userListTypes.remove}`}),
+
             fullName() {
                 return `${this.user.name.title}. ${this.user.name.first} ${this.user.name.last}`;
             },
